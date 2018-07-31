@@ -4,6 +4,8 @@ import argparse
 import cv2
 import os
  
+traineddata = ['Bourgeoisbook','Bourgeoislight','Bourgeoismed']
+
 # construct the argument parse and parse the arguments
 ap = argparse.ArgumentParser()
 ap.add_argument("-i", "--image", required=True,
@@ -34,9 +36,11 @@ cv2.imwrite(filename, gray)
 
 # load the image as a PIL/Pillow image, apply OCR, and then delete
 # the temporary file
-text = pytesseract.image_to_string(Image.open(filename), lang='Bourgeoisbook')
+for font in traineddata:
+    text = pytesseract.image_to_string(Image.open(filename), lang=font)
+    print("Font:{}| \n {} \n".format(font, text))
+
 os.remove(filename)
-print(text)
 
 # show the output images
 cv2.imshow("Image", image)

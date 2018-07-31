@@ -4,6 +4,8 @@ import argparse
 import cv2
 import os
  
+traineddata = ['Bourgeoisbook','Bourgeoislight','Bourgeoismed']
+
 # construct the argument parse and parse the arguments
 ap = argparse.ArgumentParser()
 ap.add_argument("-i", "--image", required=True,
@@ -19,7 +21,9 @@ gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 # check to see if we should apply thresholding to preprocess the
 # image
 if args["preprocess"] == "thresh":
-	gray = cv2.threshold(gray, 0, 255,
+	# gray = cv2.threshold(gray, 0, 255,
+	# 	cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1]
+    gray = cv2.threshold(gray, 0, 125,
 		cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1]
 
 # make a check to see if median blurring should be done to remove
@@ -34,9 +38,11 @@ cv2.imwrite(filename, gray)
 
 # load the image as a PIL/Pillow image, apply OCR, and then delete
 # the temporary file
-text = pytesseract.image_to_string(Image.open(filename), lang='Bourgeoisbook')
+for font in traineddata:
+    text = pytesseract.image_to_string(Image.open(filename), lang=font)
+    print("Font:{}| \n {} \n".format(font, text))
+
 os.remove(filename)
-print(text)
 
 # show the output images
 cv2.imshow("Image", image)

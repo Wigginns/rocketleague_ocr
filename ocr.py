@@ -3,8 +3,8 @@ import pytesseract
 import argparse
 import cv2
 import os
- 
-traineddata = ['Bourgeoisbook','Bourgeoislight','Bourgeoismed']
+
+traineddata = ['Bourgeoisbook']
 
 # construct the argument parse and parse the arguments
 ap = argparse.ArgumentParser()
